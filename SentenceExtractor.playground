@@ -1,0 +1,24 @@
+import Foundation
+
+func extractBodyFromEmail(hypertext: String) -> String? {
+    // Assuming that the body starts after the first empty line (end of headers)
+    let lines = hypertext.components(separatedBy: "\n\n")
+    guard lines.count > 1 else {
+        return nil
+    }
+    let body = lines[1...].joined(separator: "\n\n")
+    return body
+}
+
+func splitTextIntoSentences(text: String) -> [String] {
+    let sentenceTokenizer = NLTokenizer(unit: .sentence)
+    sentenceTokenizer.string = text
+    
+    var sentences: [String] = []
+    sentenceTokenizer.enumerateTokens(in: text.startIndex..<text.endIndex) { (range, _) in
+        sentences.append(String(text[range]))
+        return true
+    }
+    
+    return sentences
+}
